@@ -3,7 +3,7 @@
 %bcond_without	doc	# Sphinx documentation
 %bcond_without	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
-%bcond_without	python3 # CPython 3.x module
+%bcond_with	python3 # CPython 3.x module (built from python3-jsonpickle.spec)
 
 Summary:	Python library for serializing any arbitrary object graph into JSON
 Summary(pl.UTF-8):	Biblioteka Pythona do serializacji dowolnego grafu obiektów do JSON-a
@@ -19,11 +19,12 @@ Source0:	https://files.pythonhosted.org/packages/source/j/jsonpickle/jsonpickle-
 URL:		https://pypi.org/project/jsonpickle/
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
-BuildRequires:	python-setuptools
+BuildRequires:	python-setuptools >= 1:42
 BuildRequires:	python-setuptools_scm >= 3.4.1
 BuildRequires:	python-toml
 %if %{with tests}
 BuildRequires:	python-ecdsa
+BuildRequires:	python-feedparser
 BuildRequires:	python-importlib_metadata
 BuildRequires:	python-numpy
 BuildRequires:	python-pandas
@@ -33,17 +34,16 @@ BuildRequires:	python-pytest-cov
 BuildRequires:	python-pytest-flake8
 BuildRequires:	python-scikit-learn
 BuildRequires:	python-simplejson
-BuildRequires:	python-sqlalchemy >= 1.2
+BuildRequires:	python-sqlalchemy >= 1.2.19
 # TODO
 #BuildRequires:	python-bson
-#BuildRequires:	python-feedparser
 #BuildRequires:	python-ujson
 #BuildRequires:	python-yajl
 %endif
 %endif
 %if %{with python3}
 BuildRequires:	python3-modules >= 1:3.2
-BuildRequires:	python3-setuptools
+BuildRequires:	python3-setuptools >= 1:42
 BuildRequires:	python3-setuptools_scm >= 3.4.1
 BuildRequires:	python3-toml
 %if %{with tests}
@@ -51,6 +51,7 @@ BuildRequires:	python3-toml
 BuildRequires:	python3-importlib_metadata
 %endif
 BuildRequires:	python3-ecdsa
+BuildRequires:	python3-feedparser
 BuildRequires:	python3-numpy
 BuildRequires:	python3-pandas
 BuildRequires:	python3-pytest >= 3.5
@@ -62,18 +63,16 @@ BuildRequires:	python3-simplejson
 BuildRequires:	python3-sqlalchemy
 # TODO
 #BuildRequires:	python3-bson
-#BuildRequires:	python3-feedparser
 #BuildRequires:	python3-ujson
-#BuildRequires:	python3-yajl
 %endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRequires:	sed >= 4.0
 %if %{with doc}
-BuildRequires:	python3-jaraco.packaging
-BuildRequires:	python3-rst.linker
-BuildRequires:	sphinx-pdg-3
+BuildRequires:	python-jaraco.packaging >= 3.2
+BuildRequires:	python-rst.linker >= 1.9
+BuildRequires:	sphinx-pdg-2
 %endif
 Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
@@ -144,7 +143,7 @@ PYTEST_PLUGINS="pytest_black,pytest_cov.plugin,pytest_flake8" \
 %endif
 
 %if %{with doc}
-sphinx-build-3 -b html docs docs/_build/html
+sphinx-build-2 -b html docs docs/_build/html
 %endif
 
 %install
